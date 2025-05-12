@@ -1,5 +1,8 @@
-import gradio as gr
 import os
+os.environ.pop("MPLBACKEND", None)  # Elimina la variable si existe
+import matplotlib
+matplotlib.use('Agg')
+import gradio as gr
 import sys
 import shutil
 import uuid
@@ -88,7 +91,9 @@ def main(video_path, audio_path, progress=gr.Progress(track_tqdm=True)):
     print(f"Input audio path: {audio_path}")
     print(f"Loaded checkpoint path: {inference_ckpt_path}")
 
-    is_shared_ui = True if "fffiloni/LatentSync" in os.environ['SPACE_ID'] else False
+    is_shared_ui = "SPACE_ID" in os.environ and "fffiloni/LatentSync" in os.environ["SPACE_ID"]
+
+    #is_shared_ui = True if "fffiloni/LatentSync" in os.environ['SPACE_ID'] else False
     temp_dir = None
     if is_shared_ui:
         temp_dir = tempfile.mkdtemp()
@@ -216,4 +221,4 @@ with gr.Blocks(css=css) as demo:
         outputs = [video_result]
     )
 
-demo.queue().launch(show_api=False, show_error=True)
+demo.queue().launch(show_api=False, show_error=True, share=True)
