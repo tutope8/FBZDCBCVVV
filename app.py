@@ -47,6 +47,9 @@ def process_video(input_video_path, temp_dir="temp_dir"):
     # Crop the video to 10 seconds if necessary
     if video.duration > 10:
         video = video.subclip(0, 10)
+       # he cambiado de 10 a 90 el recorte del video
+    #if video.duration > 90:
+        #video = video.subclip(0, 90)
     
     # Write the cropped video to the output path
     video.write_videofile(output_video_path, codec="libx264", audio_codec="aac")
@@ -62,6 +65,8 @@ def process_audio(file_path, temp_dir):
     max_duration = 8 * 1000  # 4 seconds in milliseconds
     if len(audio) > max_duration:
         audio = audio[:max_duration]
+    # cambiar la duracion antes del corte del audio, yo lo cambie a 60 segundos
+    # max_duration = 60 * 1000  # 4 seconds in milliseconds
     
     # Save the processed audio in the temporary directory
     output_path = os.path.join(temp_dir, "trimmed_audio.wav")
